@@ -29,17 +29,18 @@ router.post('/', (req, res) => {
 // PUT
 router.put('/:id', (req, res) => {
     const taskId = req.params.id;
-    const queryText = `UPDATE task_list SET status = 'Complete' WHERE id = $1;`;
-    pool.query(queryText, [taskId])
-        .then(() => res.sendStatus(200))
+    const { status } = req.body;  // Get new status from request body
+    const queryText = `UPDATE task_list SET status = $1 WHERE id = $2;`;
+    pool.query(queryText, [status, taskId])
+       .then(() => res.sendStatus(200))
         .catch((err) => {
             console.log("Error completing task", err);
             res.sendStatus(500);
         });
 });
+ 
 
 
-  
 
 // DELETE
 router.delete('/:id', (req, res) => {

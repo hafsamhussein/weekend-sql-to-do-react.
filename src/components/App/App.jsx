@@ -27,15 +27,14 @@ function App () {
       .catch(error => console.log('Error adding new task:', error));
   };
  
-  const completeTask = (id, status) => {
-    const newStatus = status === 'Complete' ? 'Incomplete' : 'Complete';
+  const completeTask = (id, currentstatus) => {
+    const newStatus = currentstatus === 'Complete' ? 'Incomplete' : 'Complete';
     axios.put(`/todo/${id}`, { status: newStatus })
       .then(() => axios.get('/todo'))
       .then(response => setTasks(response.data))
       .catch(error => console.log('Error completing task:', error));
     
   };
-
 
 
   const deleteTask = (id) => {
@@ -53,14 +52,13 @@ function App () {
       <button onClick={addTask}>Add Task</button>
       <ul>
       {tasks.map(task => (
-          <li key={task.id} className={task.status === 'Complete' ? 'completed' : ''}>
-            {task.task_name} - Priority: {task.priority}
-            <button 
-              onClick={() => completeTask(task.id, task.status)}
-              disabled={task.status === 'Complete'}>
-              {task.status === 'Complete' ? 'Completed' : 'Complete'}
-            </button>
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
+  <li key={task.id} className={task.status === 'Complete' ? 'completed' : ''}>
+    {task.task_name} - Priority: {task.priority} - Status: {task.status}
+    <button onClick={() => completeTask(task.id, task.status)}>
+      {task.status === 'Complete' ? 'Incomplete' : 'Complete'}
+    </button>
+    <button onClick={() => deleteTask(task.id)}>Delete</button>
+
           </li>
         ))}
       </ul>
