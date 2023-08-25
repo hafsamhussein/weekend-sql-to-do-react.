@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 // PUT
 router.put('/:id', (req, res) => {
     const taskId = req.params.id;
-    const { status } = req.body;  // Get new status from request body
+    const { status } = req.body;  
     const queryText = `UPDATE task_list SET status = $1 WHERE id = $2;`;
     pool.query(queryText, [status, taskId])
        .then(() => res.sendStatus(200))
