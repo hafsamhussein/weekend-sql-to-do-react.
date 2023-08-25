@@ -16,6 +16,17 @@
 .App-intro {
   font-size: large;
 }
+.completed {
+  background-color: rgb(12, 128, 132);
+  text-decoration: line-through;
+  color: white;
+}
+
+button[disabled] {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

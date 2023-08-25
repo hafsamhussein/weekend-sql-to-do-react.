@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import './App.css'; 
+
 
 
 function App () {
@@ -24,13 +26,17 @@ function App () {
       .then(response => setTasks(response.data))
       .catch(error => console.log('Error adding new task:', error));
   };
-
-  const completeTask = (id) => {
-    axios.put(`/todo/${id}`)
+ 
+  const completeTask = (id, status) => {
+    const newStatus = status === 'Complete' ? 'Incomplete' : 'Complete';
+    axios.put(`/todo/${id}`, { status: newStatus })
       .then(() => axios.get('/todo'))
       .then(response => setTasks(response.data))
       .catch(error => console.log('Error completing task:', error));
+    
   };
+
+
 
   const deleteTask = (id) => {
     axios.delete(`/todo/${id}`)
@@ -46,10 +52,14 @@ function App () {
       <input type="number" value={newPriority} onChange={(e) => setNewPriority(e.target.value)} placeholder="Priority" />
       <button onClick={addTask}>Add Task</button>
       <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
+      {tasks.map(task => (
+          <li key={task.id} className={task.status === 'Complete' ? 'completed' : ''}>
             {task.task_name} - Priority: {task.priority}
-            <button onClick={() => completeTask(task.id)}>Complete</button>
+            <button 
+              onClick={() => completeTask(task.id, task.status)}
+              disabled={task.status === 'Complete'}>
+              {task.status === 'Complete' ? 'Completed' : 'Complete'}
+            </button>
             <button onClick={() => deleteTask(task.id)}>Delete</button>
           </li>
         ))}
